@@ -61,7 +61,7 @@ class Crawler:
         if url.startswith('https://'):
             new_url = str(url)
         else:
-         new_url = 'https://nitsri.ac.in/Pages/FacultyList.aspx?nDeptID=s' + str(url)
+         new_url = 'https://nitsri.ac.in/' + str(url)
         if new_url not in self.visited_urls and new_url not in self.urls_to_visit:
             self.urls_to_visit.append(new_url)
 
@@ -72,7 +72,7 @@ class Crawler:
 
     def run(self):
         
-        i = 0
+        i = 0 # iterator for one webpage link as Home of any site contains so much links and also link of links
         while self.urls_to_visit:
             if i == 1:
                 break
@@ -89,16 +89,18 @@ class Crawler:
         output_file = 'extracted_data2.txt'
 
       
-     
+        
         for url in self.urls_to_visit:
                   
-                  file = open(output_file,'a')
                   emails, mobile_numbers = self.crawl_and_extract(url)
-                  file.write(f"\nURL: {url}")
-                  file.write(f"\nEmails: {', '.join(emails)}")
-                  file.write(f"\nMobile Numbers: {', '.join(mobile_numbers)}\n")
-                  file.close()
+
+                  if len(emails) and len(mobile_numbers):
+                    file = open(output_file,'a')
+                    file.write(f"\nURL: {url}")
+                    file.write(f"\nEmails: {', '.join(emails)}")
+                    file.write(f"\nMobile Numbers: {', '.join(mobile_numbers)}\n")
+                    file.close()
 
 if __name__ == '__main__':
-    Crawler(urls=['https://nitsri.ac.in/Pages/FacultyList.aspx?nDeptID=s']).run()
+    Crawler(urls=['https://nitsri.ac.in/']).run()
     
