@@ -61,7 +61,7 @@ class Crawler:
         if url.startswith('https://'):
             new_url = str(url)
         else:
-         new_url = 'https://sites.google.com/programmerstrend.in/e-learning/' + str(url)
+         new_url = 'https://nitsri.ac.in/Pages/FacultyList.aspx?nDeptID=s' + str(url)
         if new_url not in self.visited_urls and new_url not in self.urls_to_visit:
             self.urls_to_visit.append(new_url)
 
@@ -71,26 +71,34 @@ class Crawler:
             self.add_url_to_visit(str(url))
 
     def run(self):
+        
+        i = 0
         while self.urls_to_visit:
+            if i == 1:
+                break
             url = self.urls_to_visit.pop(0)
             logging.info(f'Crawling: {url}')
+            print(1)
             try:
                 self.crawl(url)
             except Exception:
                 logging.exception(f'Failed to crawl: {url}')
             finally:
                 self.visited_urls.append(url)
-         
-        output_file = 'extracted_data.txt'
+            i += 1
+        output_file = 'extracted_data2.txt'
 
-        file = open(output_file,'a')
+      
+     
         for url in self.urls_to_visit:
+                  
+                  file = open(output_file,'a')
                   emails, mobile_numbers = self.crawl_and_extract(url)
                   file.write(f"\nURL: {url}")
                   file.write(f"\nEmails: {', '.join(emails)}")
                   file.write(f"\nMobile Numbers: {', '.join(mobile_numbers)}\n")
-        file.close()
+                  file.close()
 
 if __name__ == '__main__':
-    Crawler(urls=['https://sites.google.com/programmerstrend.in/e-learning/']).run()
+    Crawler(urls=['https://nitsri.ac.in/Pages/FacultyList.aspx?nDeptID=s']).run()
     
